@@ -45,7 +45,7 @@ Tips: change `3x1` CONV to `3x3` CONV can get smoother generated spectrogram.
 ## Running in Docker
 ```
 git clone https://github.com/fdb/randomCNN-voice-transfer.git
-docker run -it -v"$(pwd):/app" randomcnn-voice-transfer bash
+docker run -it -v"$(pwd):/app" frederikdb/randomcnn-voice-transfer bash
 cd /app
 CUDA_VISIBLE_DEVICES=0 python train.py -content input/boy18.wav -style input/girl52.wav
 ```
