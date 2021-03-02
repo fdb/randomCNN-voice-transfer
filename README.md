@@ -36,11 +36,19 @@ Compare the spectrogram of `gen` with `content` and `style`(X axis represents `T
 
 ## Reproduce it yourself
 ```
-pip install -r requirements.txt 
-# remove `CUDA_VISIBLE_DEVICES` when use CPU, though it will be slow. 
+pip install -r requirements.txt
+# remove `CUDA_VISIBLE_DEVICES` when use CPU, though it will be slow.
 CUDA_VISIBLE_DEVICES=0 python train.py -content input/boy18.wav -style input/girl52.wav
 ```
 Tips: change `3x1` CONV to `3x3` CONV can get smoother generated spectrogram.
+
+## Running in Docker
+```
+git clone https://github.com/fdb/randomCNN-voice-transfer.git
+docker run -it -v"$(pwd):/app" randomcnn-voice-transfer bash
+cd /app
+CUDA_VISIBLE_DEVICES=0 python train.py -content input/boy18.wav -style input/girl52.wav
+```
 
 ### But..does the `gram` of random CNN output really works ?
 Below is my experiments result of using `texture gram`  after 1-layer RandomCNN  to capture speaker identity by putting them as **the only feature** in a simple nearest neighbor speaker identification system. The table shows the result of speaker identification accuracy of this system over the first 15 utterances of 30 first speakers of the VCTK dataset, along with 100 utterances of 4 first speakers.
