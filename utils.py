@@ -1,5 +1,6 @@
 import librosa
 import numpy as np
+import soundfile as sf
 import torch
 from model import *
 
@@ -21,7 +22,7 @@ def spectrum2wav(spectrum, sr, outfile):
         S = a * np.exp(1j * p)
         x = librosa.istft(S)
         p = np.angle(librosa.stft(x, N_FFT))
-    librosa.output.write_wav(outfile, x, sr)
+    sf.write(outfile, x, sr)
 
 
 def wav2spectrum_keep_phase(filename):
@@ -61,7 +62,8 @@ def compute_content_loss(a_C, a_G):
     a_G_unrolled = a_G.view(m * n_C, n_H * n_W)
 
     # Compute the cost
-    J_content = 1.0 / (4 * m * n_C * n_H * n_W) * torch.sum((a_C_unrolled - a_G_unrolled) ** 2)
+    J_content = 1.0 / (4 * m * n_C * n_H * n_W) * \
+        torch.sum((a_C_unrolled - a_G_unrolled) ** 2)
 
     return J_content
 
@@ -118,7 +120,8 @@ def compute_layer_style_loss(a_S, a_G):
     GG = gram_over_time_axis(a_G)
 
     # Computing the loss
-    J_style_layer = 1.0 / (4 * (n_C ** 2) * (n_H * n_W)) * torch.sum((GS - GG) ** 2)
+    J_style_layer = 1.0 / (4 * (n_C ** 2) * (n_H * n_W)
+                           ) * torch.sum((GS - GG) ** 2)
 
     return J_style_layer
 
